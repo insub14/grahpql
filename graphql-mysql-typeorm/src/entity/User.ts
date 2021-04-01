@@ -1,5 +1,13 @@
+import { 
+  BaseEntity, 
+  Column, 
+  CreateDateColumn, 
+  Entity, 
+  OneToMany, 
+  PrimaryGeneratedColumn, 
+  UpdateDateColumn
+} from "typeorm";
 import { Field, Int, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import Project from "./Project";
 
 @ObjectType()
@@ -10,7 +18,7 @@ export default class User extends BaseEntity {
   userId: number;
   
   @Field()
-  @Column({ name: "email" })
+  @Column({ name: "email", unique: true })
   email: string;
 
   @Field()
@@ -34,5 +42,8 @@ export default class User extends BaseEntity {
   @OneToMany(() => Project, (project) => project.user)
   @Field(() => [Project])
   projects: Project[];
+
+  @Column('int', { default: 0 })
+  tokenVersion: number;
 
 }

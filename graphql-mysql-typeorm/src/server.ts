@@ -9,6 +9,9 @@ import { buildSchemaSync } from 'type-graphql';
 import { createConnection } from 'typeorm';
 import { UserResolver } from './resolvers/userResolver';
 import { ProjectResolver } from './resolvers/projectResolver';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { refreshToken } from './refreshToken';
 
 dotenv.config();
 
@@ -27,14 +30,21 @@ async function initialize() {
   }
 }
 initialize();
-const apolloServer = new ApolloServer({ schema });
+const apolloServer = new ApolloServer({ 
+  schema,
+  context: ({ req, res }) => ({ req, res }),
+});
 
 apolloServer.applyMiddleware({ app, cors: false });
 
 const prod: boolean = process.env.NODE_ENV === 'production';
-const port = prod ? process.env.PORT : 3000;
+const port = prod ? process.env.PORT : 8000;
 
 app.use(morgan('dev'));
 app.use(compression());
+app.use(cors({ credentials: true, origin: true }));
+app.use(cookieParser());
+
+app.post('/refresh-token', refreshToken)
 
 app.listen(port, (): void => console.log(`\n🚀      GraphQL is now running on http://localhost:${port}/graphql`))
