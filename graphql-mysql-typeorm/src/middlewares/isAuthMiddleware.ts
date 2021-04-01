@@ -2,8 +2,7 @@ import { MiddlewareFn } from "type-graphql";
 import { verifyAccessToken } from "../lib/jwt";
 import { Context } from "../types/context";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const isAuth: MiddlewareFn<Context> = ({ context }:any, next) => {
+export const isAuth: MiddlewareFn<Context> = ({ context }, next) => {
   const { authorization } = context.req.headers;
   if (!authorization) throw new Error('not authenticated');
   try {

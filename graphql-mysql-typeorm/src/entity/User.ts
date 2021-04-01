@@ -43,7 +43,7 @@ export default class User extends BaseEntity {
   @Field(() => [Project])
   projects: Project[];
 
-  @Column('int', { default: 0 })
+  @Column('int', { name: "token_version", default: 0 })
   tokenVersion: number;
 
 }
