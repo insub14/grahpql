@@ -8,7 +8,7 @@
       "es2018",
       "esnext.asynciterable"
     ],
-    "outDir": "dist",         
+    "outDir": "./dist",         
     "rootDir": "src",
     "moduleResolution": "node",
     "strict": true,
